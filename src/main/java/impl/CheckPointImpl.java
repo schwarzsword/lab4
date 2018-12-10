@@ -34,6 +34,7 @@ public class CheckPointImpl implements CheckPointService {
     public List<PointEntity> getPoints() {
         return pointRepository.findAllBySessionId(httpSession.getId());
     }
+
     @Transactional
     @Override
     public String savePoint(String strX, String strY, String strR) {
@@ -44,4 +45,6 @@ public class CheckPointImpl implements CheckPointService {
         pointRepository.save(point);
         return point.getEntering();
     }
+
+
 }

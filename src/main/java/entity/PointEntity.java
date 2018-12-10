@@ -10,6 +10,7 @@ import javax.persistence.*;
 public class PointEntity {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Basic
     @Column(name = "x", nullable = false, precision = 0)
@@ -40,15 +41,15 @@ public class PointEntity {
 
     private void isInArea(double x, double y, double r) {
         if (x < -3 || x > 5 || y < -4 || y > 4 || r < 1 || r > 5) {
-            this.setEntering("Неверные данные");
+            this.setEntering("Invalid operands");
         } else {
             if (
                     x >= 0 && y >= 0 && x <= r && y <= (r / 2) ||
                             x >= 0 && y <= 0 && y >= (x - (r / 2))||
                             y >= 0 && x <= 0 && (x*x + y*y) <= r*r
             ) {
-                this.setEntering("Попал");
-            } else this.setEntering("Мимо");
+                this.setEntering("true");
+            } else this.setEntering("false");
         }
     }
 }

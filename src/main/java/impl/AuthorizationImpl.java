@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import repository.UserRepository;
 import service.AuthorizationService;
 
+import java.util.Optional;
+
 @Service
 public class AuthorizationImpl implements AuthorizationService {
     final
@@ -20,8 +22,11 @@ public class AuthorizationImpl implements AuthorizationService {
 
     @Override
     public boolean logIn(String login, String password) {
-        return BCrypt.checkpw(password, userRepository
-                .findUserByLogin(login)
-                .map(UserEntity::getPassword).orElse("User not found"));
+        String hashed;
+        Optional<UserEntity> user = userRepository.findUserByLogin(login);
+        if(user.isPresent()){
+            hashed = user.get().getPassword();
+         } else hashed = BCrypt.hashpw(" ", BCrypt.gensalt());
+        return BCrypt.checkpw(password, hashed);
     }
 }

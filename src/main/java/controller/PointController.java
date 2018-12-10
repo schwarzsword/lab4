@@ -17,14 +17,14 @@ public class PointController {
         this.checkPointService = checkPointService;
     }
 
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    @RequestMapping(value = "/get", method = RequestMethod.POST)
     public
     @ResponseBody
     ResponseEntity getPoints() {
         return ResponseEntity.ok(new Gson().toJson(checkPointService.getPoints()));
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     public
     @ResponseBody
     ResponseEntity addPoint(@RequestParam("x") String strX,
@@ -34,7 +34,7 @@ public class PointController {
         return ResponseEntity.ok("{\"Entering\": \"" + result + "\"}");
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public
     @ResponseBody
     ResponseEntity logOut() {

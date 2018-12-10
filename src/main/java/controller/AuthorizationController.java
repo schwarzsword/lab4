@@ -17,12 +17,11 @@ public class AuthorizationController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    @ResponseBody
     public ResponseEntity login(@RequestParam("login") String login, @RequestParam("password") String password) {
         if (authorizationService.logIn(login, password)) {
-            return ResponseEntity.ok("Authentication success");
+            return ResponseEntity.ok(true);
         }
-        return ResponseEntity.badRequest().body("Authentication failed");
+        return ResponseEntity.ok(false);
     }
 
 
