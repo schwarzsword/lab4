@@ -1,5 +1,5 @@
 create table labuser (
-  login    varchar(50) primary key,
+  username    varchar(50) primary key,
   password varchar(255) not null
 );
 

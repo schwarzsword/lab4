@@ -1,7 +1,8 @@
 package controller;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +26,16 @@ public class PointController {
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public
-    ResponseEntity getPoints(@AuthenticationPrincipal User user) {
-        GsonBuilder b = new GsonBuilder();
-        b.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
-        Gson gson = b.create();
-        return ResponseEntity.ok(gson.toJson(checkPointService.getPoints(authorizationService.loadUserByUsername(user.getUsername()).get())));
+    public ResponseEntity getPoints(@AuthenticationPrincipal User user) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new Hibernate5Module());
+
+        try {
+            return ResponseEntity.ok(objectMapper.writeValueAsString(checkPointService.getPoints(authorizationService.loadUserByUsername(user.getUsername()).get())));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)

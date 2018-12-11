@@ -1,5 +1,6 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -25,6 +26,7 @@ public class PointEntity {
     @Basic
     @Column(name = "entering", nullable = false, length = 20)
     private String entering;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent", referencedColumnName = "username")
     private UserEntity labuserByParent;

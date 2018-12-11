@@ -21,9 +21,13 @@ public class Main {
         u3.setUsername("schwarzsword");
         u3.setPassword(BCrypt.hashpw("qwe", BCrypt.gensalt()));
         bean.save(u3);
+        UserEntity u4 = new UserEntity();
+        u4.setUsername("radiant");
+        u4.setPassword(BCrypt.hashpw("magnus", BCrypt.gensalt()));
+        bean.save(u4);
         UserEntity user = new UserEntity();
-        user.setUsername("radiant");
-        user.setPassword(BCrypt.hashpw("magnus", BCrypt.gensalt()));
+        user.setUsername("admin");
+        user.setPassword(BCrypt.hashpw("admin", BCrypt.gensalt()));
         bean.save(user);
     }
 }

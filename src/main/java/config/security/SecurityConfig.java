@@ -1,7 +1,6 @@
 package config.security;
 
 
-import com.google.common.collect.ImmutableList;
 import config.security.handlers.SuccessLoginHandler;
 import config.security.service.RestEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +30,7 @@ import org.springframework.web.filter.CorsFilter;
 import service.AuthorizationService;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -51,7 +51,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     final
     SuccessLoginHandler successLoginHandler;
-
 
 
     @Autowired
@@ -87,7 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers("/login","/login/**").permitAll()
+                .antMatchers("/login", "/login/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
@@ -143,10 +142,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedHeaders(ImmutableList.of("*"));
-        corsConfiguration.setAllowedMethods(ImmutableList.of("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH"));
+        corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
+        corsConfiguration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH"));
         corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.setAllowedOrigins(ImmutableList.of("*"));
+        corsConfiguration.setAllowedOrigins(Arrays.asList("*"));
         corsConfiguration.addAllowedHeader("Access-Control-Allow-Origin: *");
         corsConfiguration.addAllowedHeader("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS");
         corsConfiguration.addAllowedHeader("Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token");

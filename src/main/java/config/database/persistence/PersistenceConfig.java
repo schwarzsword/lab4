@@ -19,7 +19,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"repository", })
+@ComponentScan(basePackages = {"repository", "impl"})
 @EnableJpaRepositories("repository")
 public class PersistenceConfig {
     private static final String PROP_HIBERNATE_DIALECT = "hibernate.dialect";
