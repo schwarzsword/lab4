@@ -1,9 +1,14 @@
 package controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import service.AuthorizationService;
 import service.CheckPointService;
 
 @RestController
@@ -11,34 +16,33 @@ import service.CheckPointService;
 public class PointController {
     final
     CheckPointService checkPointService;
+    final AuthorizationService authorizationService;
 
     @Autowired
-    public PointController(CheckPointService checkPointService) {
+    public PointController(CheckPointService checkPointService, AuthorizationService authorizationService) {
         this.checkPointService = checkPointService;
+        this.authorizationService = authorizationService;
     }
 
-    @RequestMapping(value = "/get", method = RequestMethod.POST)
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
     public
-    @ResponseBody
-    ResponseEntity getPoints() {
-        return ResponseEntity.ok(new Gson().toJson(checkPointService.getPoints()));
+    ResponseEntity getPoints(@AuthenticationPrincipal User user) {
+        GsonBuilder b = new GsonBuilder();
+        b.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
+        Gson gson = b.create();
+        return ResponseEntity.ok(gson.toJson(checkPointService.getPoints(authorizationService.loadUserByUsername(user.getUsername()).get())));
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
     public
     @ResponseBody
     ResponseEntity addPoint(@RequestParam("x") String strX,
                             @RequestParam("y") String strY,
-                            @RequestParam("r") String strR) {
-        String result = checkPointService.savePoint(strX, strY, strR);
+                            @RequestParam("r") String strR,
+                            @AuthenticationPrincipal User user) {
+        UserEntity userEntity = authorizationService.loadUserByUsername(user.getUsername()).get();
+        String result = checkPointService.savePoint(strX, strY, strR, userEntity);
         return ResponseEntity.ok("{\"Entering\": \"" + result + "\"}");
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    ResponseEntity logOut() {
-        checkPointService.logOut();
-        return ResponseEntity.ok().body("Session was disabled");
-    }
 }

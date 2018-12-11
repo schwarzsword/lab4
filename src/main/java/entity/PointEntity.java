@@ -3,6 +3,7 @@ package entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Table(name = "point", schema = "public", catalog = "s243884")
 @Entity
@@ -24,20 +25,22 @@ public class PointEntity {
     @Basic
     @Column(name = "entering", nullable = false, length = 20)
     private String entering;
-    @Basic
-    @Column(name = "sessionId", nullable = false)
-    private String sessionId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent", referencedColumnName = "username")
+    private UserEntity labuserByParent;
 
     protected PointEntity() {
     }
 
-    public PointEntity(double x, double y, int r, String sessionId) {
+    public PointEntity(double x, double y, int r, UserEntity parent) {
         this.x = x;
         this.y = y;
         this.r = r;
         isInArea(x, y, r);
-        this.sessionId = sessionId;
+        this.labuserByParent = parent;
     }
+
+
 
     private void isInArea(double x, double y, double r) {
         if (x < -3 || x > 5 || y < -4 || y > 4 || r < 1 || r > 5) {
@@ -52,4 +55,5 @@ public class PointEntity {
             } else this.setEntering("false");
         }
     }
+
 }

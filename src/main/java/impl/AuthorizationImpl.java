@@ -9,7 +9,7 @@ import service.AuthorizationService;
 
 import java.util.Optional;
 
-@Service
+@Service("authorizationService")
 public class AuthorizationImpl implements AuthorizationService {
     final
     UserRepository userRepository;
@@ -23,10 +23,20 @@ public class AuthorizationImpl implements AuthorizationService {
     @Override
     public boolean logIn(String login, String password) {
         String hashed;
-        Optional<UserEntity> user = userRepository.findUserByLogin(login);
-        if(user.isPresent()){
+        Optional<UserEntity> user = userRepository.findUserEntityByUsername(login);
+        if (user.isPresent()) {
             hashed = user.get().getPassword();
-         } else hashed = BCrypt.hashpw(" ", BCrypt.gensalt());
+        } else hashed = BCrypt.hashpw(" ", BCrypt.gensalt());
         return BCrypt.checkpw(password, hashed);
+    }
+
+    @Override
+    public Optional<UserEntity> loadUserByUsername(String login) {
+        return userRepository.findUserEntityByUsername(login);
+    }
+
+    @Override
+    public void logOut() {
+
     }
 }

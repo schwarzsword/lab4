@@ -1,2 +1,2 @@
-drop table user;
-drop table point;
+drop table point cascade ;
+drop table labuser cascade ;

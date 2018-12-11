@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -16,7 +15,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan({
         "controller",
         "config.documentation",
-        "config.database"
+        "config.database",
+        "config.security"
 })
 public class WebConfig extends WebMvcConfigurerAdapter {
 
@@ -29,17 +29,16 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
-
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowCredentials(true)
-                .allowedHeaders("*")
-                .allowedMethods("*")
-                .allowedOrigins("*");
-        super.addCorsMappings(registry);
-    }
+//
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**")
+//                .allowCredentials(true)
+//                .allowedHeaders("*")
+//                .allowedMethods("*")
+//                .allowedOrigins("*");
+//        super.addCorsMappings(registry);
+//    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

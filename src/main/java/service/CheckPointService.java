@@ -1,14 +1,13 @@
 package service;
 
 import entity.PointEntity;
+import entity.UserEntity;
 
 import java.util.List;
 
 public interface CheckPointService {
-    String savePoint(String strX, String strY, String strR);
+    String savePoint(String strX, String strY, String strR, UserEntity parent);
 
-    void logOut();
-
-    List<PointEntity> getPoints();
+    List<PointEntity> getPoints(UserEntity userEntity);
 
 }
