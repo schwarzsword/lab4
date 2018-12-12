@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import repository.PointRepository;
 import service.CheckPointService;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Service("checkPointService")
@@ -17,12 +16,9 @@ public class CheckPointImpl implements CheckPointService {
     final
     PointRepository pointRepository;
 
-    private final HttpSession httpSession;
-
     @Autowired
-    public CheckPointImpl(PointRepository pointRepository, HttpSession httpSession) {
+    public CheckPointImpl(PointRepository pointRepository) {
         this.pointRepository = pointRepository;
-        this.httpSession = httpSession;
     }
 
 

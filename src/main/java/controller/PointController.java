@@ -29,9 +29,10 @@ public class PointController {
     public ResponseEntity getPoints(@AuthenticationPrincipal User user) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new Hibernate5Module());
+        String name = user.getUsername();
 
         try {
-            return ResponseEntity.ok(objectMapper.writeValueAsString(checkPointService.getPoints(authorizationService.loadUserByUsername(user.getUsername()).get())));
+            return ResponseEntity.ok(objectMapper.writeValueAsString(checkPointService.getPoints(authorizationService.loadUserByUsername(name).get())));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;
